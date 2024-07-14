@@ -46,6 +46,16 @@
         .error {
             color: red;
         }
+
+        .details {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .details strong {
+            display: block;
+            margin: 5px 0;
+        }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
@@ -87,12 +97,13 @@
     <div id="user-details" style="display: none;">
         <img id="user-photo" src="https://telegra.ph/file/f9dadbd7697faba2d103f.jpg" alt="User Profile Photo"><br>
         <div class="thick"><span id="user-first-name"></span>'s Details</div>
-        <br>
-        <strong>Name:</strong> <span id="user-first-name"></span><br>
-        <strong>User ID:</strong> <span id="user-id"></span><br>
-        <strong>Username:</strong> <span id="username"></span><br>
-        <strong>DC ID:</strong> <span id="dc-id"></span><br>
-        <strong>Joining Date:</strong> <span id="join-date"></span><br>
+        <div class="details">
+            <strong>Name: <span id="user-first-name"></span></strong>
+            <strong>User ID: <span id="user-id"></span></strong>
+            <strong>Username: <span id="username"></span></strong>
+            <strong>DC ID: <span id="dc-id"></span></strong>
+            <strong>Joining Date: <span id="join-date"></span></strong>
+        </div>
     </div>
     <div id="error" class="error"></div>
 </body>
