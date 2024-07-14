@@ -30,7 +30,7 @@
             height: 100vh;
         }
 
-        #loading-photo, #user-photo {
+        #user-photo {
             border-radius: 50%;
             width: 100px;
             height: 100px;
@@ -71,7 +71,7 @@
             justify-content: center;
             align-items: center;
             border-radius: 50%;
-            background: linear-gradient(0deg, #000000 50%, #333333 100%);
+            background: linear-gradient(0deg, #FFFFFF 50%, #FF5C35 100%);
             animation: spin 1s linear infinite;
         }
 
@@ -102,7 +102,6 @@
                 const user = tg.initDataUnsafe.user;
 
                 if (user) {
-                    document.getElementById('loading-photo').src = 'https://telegra.ph/file/f9dadbd7697faba2d103f.jpg';
                     document.getElementById('user-photo').src = user.photo_url || 'https://telegra.ph/file/f9dadbd7697faba2d103f.jpg';
                     document.getElementById('user-first-name').textContent = user.first_name || 'Unknown';
                     document.getElementById('user-id').textContent = user.id || 'Unknown';
