@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #0d0d0d, #e60000, #4d4d4d, #1a1a1a);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #loading, #user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #loading img, #user-details img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+        }
+
+        .thick {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        function displayUserDetails() {
+            const tg = Telegram.WebApp;
+
+            tg.enableClosingConfirmation();
+
+            console.log('Initializing Telegram WebApp');
+            console.log('Telegram WebApp initData:', tg.initData);
+
+            if (tg.initDataUnsafe) {
+                const user = tg.initDataUnsafe.user;
+                console.log('User data:', user);
+
+                if (user) {
+                    document.getElementById('loading-photo').src = user.photo_url || 'https://via.placeholder.com/100';
+                    document.getElementById('user-photo').src = user.photo_url || 'https://via.placeholder.com/100';
+                    document.getElementById('user-first-name').textContent = user.first_name;
+                    document.getElementById('user-id').textContent = user.id;
+                    document.getElementById('username').textContent = user.username;
+                    document.getElementById('status').textContent = "Online"; // Assuming the user is online
+                    document.getElementById('dc-id').textContent = user.dc_id;
+                    document.getElementById('join-date').textContent = new Date(user.joined * 1000).toLocaleDateString();
+
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('user-details').style.display = 'flex';
+                        tg.disableClosingConfirmation();
+                    }, 2000);
+                } else {
+                    document.getElementById('error').textContent = 'Unable to fetch user details.';
+                    tg.disableClosingConfirmation();
+                }
+            } else {
+                document.getElementById('error').textContent = 'This app can only be used in Telegram.';
+                tg.disableClosingConfirmation();
+            }
+        }
+    </script>
+</head>
+<body onload="displayUserDetails()">
+    <div id="loading">
+        <img id="loading-photo" src="https://via.placeholder.com/100" alt="Loading...">
+        <div class="thick">Loading...</div>
+    </div>
+    <div id="user-details" style="display: none;">
+        <img id="user-photo" alt="User Profile Photo"><br>
+        <div class="thick"><span id="user-first-name"></span>'s Details</div>
+        <br>
+        <strong>Name:</strong> <span id="user-first-name"></span><br>
+        <strong>User ID:</strong> <span id="user-id"></span><br>
+        <strong>Username:</strong> <span id="username"></span><br>
+        <strong>DC ID:</strong> <span id="dc-id"></span><br>
+        <strong>Joining Date:</strong> <span id="join-date"></span><br>
+    </div>
+    <div id="error" class="error"></div>
+</body>
+</html>
