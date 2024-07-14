@@ -10,6 +10,26 @@
             text-align: center;
             margin: 50px;
         }
+        #loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #loading img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+        .thick {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        #user-details {
+            display: none;
+        }
         .error {
             color: red;
         }
@@ -18,14 +38,23 @@
         function displayUserDetails() {
             if (window.Telegram.WebApp.initDataUnsafe) {
                 const user = window.Telegram.WebApp.initDataUnsafe.user;
+                const userDetailsDiv = document.getElementById('user-details');
+                const loadingDiv = document.getElementById('loading');
+
                 if (user) {
-                    document.getElementById('user-photo').src = user.photo_url;
+                    document.getElementById('loading-photo').src = user.photo_url || 'https://via.placeholder.com/100';
+                    document.getElementById('user-photo').src = user.photo_url || 'https://via.placeholder.com/100';
+                    document.getElementById('user-first-name').textContent = user.first_name;
                     document.getElementById('user-id').textContent = user.id;
                     document.getElementById('username').textContent = user.username;
-                    document.getElementById('first-name').textContent = user.first_name;
-                    document.getElementById('last-name').textContent = user.last_name || "N/A";
-                    document.getElementById('join-date').textContent = new Date(user.joined).toLocaleDateString();
-                    document.getElementById('user-details').style.display = 'block';
+                    document.getElementById('status').textContent = "Online"; // Assuming the user is online
+                    document.getElementById('dc-id').textContent = user.dc_id;
+                    document.getElementById('join-date').textContent = new Date(user.joined * 1000).toLocaleDateString();
+
+                    setTimeout(() => {
+                        loadingDiv.style.display = 'none';
+                        userDetailsDiv.style.display = 'block';
+                    }, 2000);
                 } else {
                     document.getElementById('error').textContent = 'Unable to fetch user details.';
                 }
@@ -36,14 +65,20 @@
     </script>
 </head>
 <body onload="displayUserDetails()">
-    <h1>Telegram User Details</h1>
-    <div id="user-details" style="display: none;">
+    <div id="loading">
+        <img id="loading-photo" src="https://via.placeholder.com/100" alt="Loading...">
+        <div class="thick">Loading...</div>
+    </div>
+    <div id="user-details">
         <img id="user-photo" alt="User Profile Photo" width="100" height="100"><br>
+        <div class="thick"><span id="user-first-name"></span>'s Details</div>
+        <br>
+        <strong>User:</strong> <span id="user-first-name"></span><br>
         <strong>User ID:</strong> <span id="user-id"></span><br>
         <strong>Username:</strong> <span id="username"></span><br>
-        <strong>First Name:</strong> <span id="first-name"></span><br>
-        <strong>Last Name:</strong> <span id="last-name"></span><br>
-        <strong>Join Date:</strong> <span id="join-date"></span><br>
+        <strong>Status:</strong> <span id="status"></span><br>
+        <strong>DC ID:</strong> <span id="dc-id"></span><br>
+        <strong>Joining Date:</strong> <span id="join-date"></span><br>
     </div>
     <div id="error" class="error"></div>
 </body>
