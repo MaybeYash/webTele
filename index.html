@@ -37,8 +37,12 @@
     </style>
     <script>
         function displayUserDetails() {
-            if (window.Telegram.WebApp.initDataUnsafe) {
-                const user = window.Telegram.WebApp.initDataUnsafe.user;
+            const tg = Telegram.WebApp;
+
+            tg.enableClosingConfirmation();
+
+            if (tg.initDataUnsafe) {
+                const user = tg.initDataUnsafe.user;
                 const userDetailsDiv = document.getElementById('user-details');
                 const loadingDiv = document.getElementById('loading');
 
@@ -55,12 +59,15 @@
                     setTimeout(() => {
                         loadingDiv.style.display = 'none';
                         userDetailsDiv.style.display = 'flex';
+                        tg.disableClosingConfirmation();
                     }, 2000);
                 } else {
                     document.getElementById('error').textContent = 'Unable to fetch user details.';
+                    tg.disableClosingConfirmation();
                 }
             } else {
                 document.getElementById('error').textContent = 'This app can only be used in Telegram.';
+                tg.disableClosingConfirmation();
             }
         }
     </script>
