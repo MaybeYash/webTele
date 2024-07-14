@@ -52,37 +52,29 @@
         function displayUserDetails() {
             const tg = Telegram.WebApp;
 
-            tg.enableClosingConfirmation();
-
-            console.log('Initializing Telegram WebApp');
-            console.log('Telegram WebApp initData:', tg.initData);
+            tg.ready();
 
             if (tg.initDataUnsafe) {
                 const user = tg.initDataUnsafe.user;
-                console.log('User data:', user);
 
                 if (user) {
                     document.getElementById('loading-photo').src = 'https://telegra.ph/file/f9dadbd7697faba2d103f.jpg';
-                    document.getElementById('user-photo').src = 'https://telegra.ph/file/f9dadbd7697faba2d103f.jpg';
-                    document.getElementById('user-first-name').textContent = user.first_name;
-                    document.getElementById('user-id').textContent = user.id;
-                    document.getElementById('username').textContent = user.username;
-                    document.getElementById('status').textContent = "Online"; // Assuming the user is online
-                    document.getElementById('dc-id').textContent = user.dc_id;
-                    document.getElementById('join-date').textContent = new Date(user.joined * 1000).toLocaleDateString();
+                    document.getElementById('user-photo').src = user.photo_url || 'https://telegra.ph/file/f9dadbd7697faba2d103f.jpg';
+                    document.getElementById('user-first-name').textContent = user.first_name || 'Unknown';
+                    document.getElementById('user-id').textContent = user.id || 'Unknown';
+                    document.getElementById('username').textContent = user.username || 'Unknown';
+                    document.getElementById('dc-id').textContent = user.dc_id || 'Unknown';
+                    document.getElementById('join-date').textContent = user.joined ? new Date(user.joined * 1000).toLocaleDateString() : 'Unknown';
 
                     setTimeout(() => {
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('user-details').style.display = 'flex';
-                        tg.disableClosingConfirmation();
                     }, 2000);
                 } else {
                     document.getElementById('error').textContent = 'Unable to fetch user details.';
-                    tg.disableClosingConfirmation();
                 }
             } else {
                 document.getElementById('error').textContent = 'This app can only be used in Telegram.';
-                tg.disableClosingConfirmation();
             }
         }
     </script>
@@ -93,7 +85,7 @@
         <div class="thick">Loading...</div>
     </div>
     <div id="user-details" style="display: none;">
-        <img id="user-photo" alt="User Profile Photo"><br>
+        <img id="user-photo" src="https://telegra.ph/file/f9dadbd7697faba2d103f.jpg" alt="User Profile Photo"><br>
         <div class="thick"><span id="user-first-name"></span>'s Details</div>
         <br>
         <strong>Name:</strong> <span id="user-first-name"></span><br>
