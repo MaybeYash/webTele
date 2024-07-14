@@ -30,7 +30,7 @@
             height: 100vh;
         }
 
-        #loading img, #user-details img {
+        #loading-photo, #user-photo {
             border-radius: 50%;
             width: 100px;
             height: 100px;
@@ -55,6 +55,40 @@
         .details strong {
             display: block;
             margin: 5px 0;
+        }
+
+        .loader-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .loader {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: linear-gradient(0deg, #000000 50%, #333333 100%);
+            animation: spin 1s linear infinite;
+        }
+
+        .inner-circle {
+            width: 90%;
+            height: 90%;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -91,7 +125,11 @@
 </head>
 <body onload="displayUserDetails()">
     <div id="loading">
-        <img id="loading-photo" src="https://telegra.ph/file/f9dadbd7697faba2d103f.jpg" alt="Loading...">
+        <div class="loader-container">
+            <div class="loader">
+                <div class="inner-circle"></div>
+            </div>
+        </div>
         <div class="thick">Loading...</div>
     </div>
     <div id="user-details" style="display: none;">
